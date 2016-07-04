@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/pbkdf2"
 )
 
-var Iterations = 5000
+const Iterations = 5000
 
 const MaxLength = 4096
 
