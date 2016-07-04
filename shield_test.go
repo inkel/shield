@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCompare(t *testing.T) {
+func TestCheck(t *testing.T) {
 	crypted := []byte("8cc55858f341586bde60d595d376fdafc4535d94a7383231f2adf323b5c508d2bdddd75b783b2c3acb196334288402406041cb1114ed13e6b96443b0aafccd5esalt")
 
 	password := []byte("password")
