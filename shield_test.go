@@ -47,3 +47,18 @@ func TestEncryptFailure(t *testing.T) {
 		t.Error("It should have failed")
 	}
 }
+
+func TestSanity(t *testing.T) {
+	password := []byte("password")
+	salt := []byte("salt")
+
+	encrypted, err := Encrypt(password, salt)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !Check(password, []byte(encrypted)) {
+		t.Error("password should have checked against encrypted version")
+	}
+}
