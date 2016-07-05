@@ -4,7 +4,6 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"math/rand"
-	"strings"
 
 	"golang.org/x/crypto/pbkdf2"
 )
@@ -23,7 +22,7 @@ func Check(password, encrypted []byte) bool {
 	hash := encrypted[0:128]
 	salt := encrypted[128:]
 
-	return strings.Compare(digest(password, salt), string(hash)) == 0
+	return digest(password, salt) == string(hash)
 }
 
 func digest(password, salt []byte) string {
