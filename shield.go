@@ -1,9 +1,9 @@
 package shield
 
 import (
+	"crypto/rand"
 	"crypto/sha512"
 	"fmt"
-	"math/rand"
 
 	"golang.org/x/crypto/pbkdf2"
 )
