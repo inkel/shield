@@ -3,6 +3,7 @@ package shield
 import (
 	"crypto/rand"
 	"crypto/sha512"
+	"encoding/hex"
 	"fmt"
 
 	"golang.org/x/crypto/pbkdf2"
@@ -28,7 +29,7 @@ func Check(password, encrypted []byte) bool {
 func digest(password, salt []byte) string {
 	dig := pbkdf2.Key(password, salt, Iterations, sha512.Size, sha512.New)
 
-	return fmt.Sprintf("%x", dig)
+	return hex.EncodeToString(dig)
 }
 
 // Encrypt will return a string with a salt-encrypted version of
