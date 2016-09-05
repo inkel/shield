@@ -23,16 +23,22 @@ func (e Error) Error() string { return string(e) }
 
 const ErrPasswordTooLong = Error("password too long")
 
+type Shield struct {
+	iterations int
+	maxLength  int
+	saltLength int
+}
+
 // Check returns true if the supplied password matches the password+salt of encrypted.
-func Check(password, encrypted []byte) bool {
+func (s Shield) Check(password, encrypted []byte) bool {
 	hash := encrypted[0:128]
 	salt := encrypted[128:]
 
-	return digest(password, salt) == string(hash)
+	return s.digest(password, salt) == string(hash)
 }
 
-func digest(password, salt []byte) string {
-	dig := pbkdf2.Key(password, salt, Iterations, sha512.Size, sha512.New)
+func (s Shield) digest(password, salt []byte) string {
+	dig := pbkdf2.Key(password, salt, s.iterations, sha512.Size, sha512.New)
 
 	return hex.EncodeToString(dig)
 }
@@ -41,17 +47,17 @@ func digest(password, salt []byte) string {
 // password. This encrypted password is self contained, in the sense
 // that there's no need to store the encrypted password and salt
 // separatedly, as it will have everything in the returned string.
-func Encrypt(password, salt []byte) (string, error) {
-	if len(password) > MaxLength {
+func (s Shield) Encrypt(password, salt []byte) (string, error) {
+	if len(password) > s.maxLength {
 		return "", ErrPasswordTooLong
 	}
-	return digest(password, salt) + string(salt), nil
+	return s.digest(password, salt) + string(salt), nil
 }
 
 // GenerateSalt returns a new salt of SaltLength length filled with
 // random bytes.
-func GenerateSalt() ([]byte, error) {
-	salt := make([]byte, SaltLength)
+func (s Shield) GenerateSalt() ([]byte, error) {
+	salt := make([]byte, s.saltLength)
 	_, err := rand.Read(salt)
 	return salt, err
 }
