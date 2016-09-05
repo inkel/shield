@@ -29,6 +29,13 @@ type Shield struct {
 	saltLength int
 }
 
+func Default() Shield {
+	return Shield{
+		iterations: Iterations,
+		maxLength:  MaxLength,
+		saltLength: SaltLength}
+}
+
 // Check returns true if the supplied password matches the password+salt of encrypted.
 func (s Shield) Check(password, encrypted []byte) bool {
 	hash := encrypted[0:128]
