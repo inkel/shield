@@ -39,7 +39,7 @@ func TestEncryptFailure(t *testing.T) {
 	s := newShield()
 
 	salt := []byte("salt")
-	password := bytes.Repeat([]byte("p"), s.MaxLength+1)
+	password := bytes.Repeat([]byte("p"), MaxLength+1)
 
 	hex, err := s.Encrypt(password, salt)
 
