@@ -62,10 +62,10 @@ func (s Shield) Encrypt(password, salt []byte) (string, error) {
 	return s.digest(password, salt) + string(salt), nil
 }
 
-// GenerateSalt returns a new salt of SaltLength length filled with
+// GenerateSalt returns a new salt of the given length filled with
 // random bytes.
-func (s Shield) GenerateSalt() ([]byte, error) {
-	salt := make([]byte, s.SaltLength)
+func GenerateSalt(length int) ([]byte, error) {
+	salt := make([]byte, length)
 	_, err := rand.Read(salt)
 	return salt, err
 }
