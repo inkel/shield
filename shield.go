@@ -27,15 +27,11 @@ type Shield struct {
 	Iterations, SaltLength int
 }
 
-// Default returns an instance of Shield initialized with default values for
+// Default is an instance of Shield initialized with default values for
 // each of its variables:
 //     Iterations: 5000
 //     SaltLength: 32
-func Default() Shield {
-	return Shield{
-		Iterations: 5000,
-		SaltLength: 32}
-}
+var Default = Shield{Iterations: 5000, SaltLength: 32}
 
 // Check returns true if the supplied password matches the password+salt of encrypted.
 func (s Shield) Check(password, encrypted []byte) bool {
