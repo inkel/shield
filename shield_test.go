@@ -11,7 +11,7 @@ func TestCheck(t *testing.T) {
 
 	password := []byte("password")
 
-	if !Check(password, crypted) {
+	if !Default.Check(password, crypted) {
 		t.Fatal("should match")
 	}
 }
@@ -22,7 +22,7 @@ func TestEncrypt(t *testing.T) {
 
 	expected := "8cc55858f341586bde60d595d376fdafc4535d94a7383231f2adf323b5c508d2bdddd75b783b2c3acb196334288402406041cb1114ed13e6b96443b0aafccd5esalt"
 
-	crypted, err := Encrypt(password, salt)
+	crypted, err := Default.Encrypt(password, salt)
 
 	if err != nil {
 		t.Error("Shouldn't have failed", err)
@@ -34,10 +34,12 @@ func TestEncrypt(t *testing.T) {
 }
 
 func TestEncryptFailure(t *testing.T) {
+	s := Default
+
 	salt := []byte("salt")
 	password := bytes.Repeat([]byte("p"), MaxLength+1)
 
-	hex, err := Encrypt(password, salt)
+	hex, err := s.Encrypt(password, salt)
 
 	if hex != "" {
 		t.Error("Shouldn't have returned a string")
@@ -52,13 +54,13 @@ func TestSanity(t *testing.T) {
 	password := []byte("password")
 	salt := []byte("salt")
 
-	encrypted, err := Encrypt(password, salt)
+	encrypted, err := Default.Encrypt(password, salt)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !Check(password, []byte(encrypted)) {
+	if !Default.Check(password, []byte(encrypted)) {
 		t.Error("password should have checked against encrypted version")
 	}
 }
@@ -68,7 +70,7 @@ func BenchmarkCheck(b *testing.B) {
 	password := []byte("password")
 
 	for i := 0; i < b.N; i++ {
-		Check(password, crypted)
+		Default.Check(password, crypted)
 	}
 }
 
@@ -77,6 +79,6 @@ func BenchmarkEncrypt(b *testing.B) {
 	salt := []byte("salt")
 
 	for i := 0; i < b.N; i++ {
-		Encrypt(password, salt)
+		Default.Encrypt(password, salt)
 	}
 }
